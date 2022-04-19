@@ -6,7 +6,6 @@
 using HananokiLib;
 using PropertyGridExtensionHacks;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -249,9 +248,13 @@ namespace Tulip {
 
 		/////////////////////////////////////////
 		async void toolStripButton_ConvM4A_Click( object sender, EventArgs e ) {
+			if( listView_Files.SelectedIndices.Count == 0 ) {
+				UINotifyStatus.Warning( "ファイルを選択してください" );
+				return;
+			}
 			using( new ScopeSound() ) {
 				var c = listView_Files.m_items[ listView_Files.SelectedIndices[ 0 ] ].cueSheet;
-				await Utils.ExecConv( c.filePath );
+				await Utils.ExecConv( c );
 			}
 		}
 
@@ -274,8 +277,29 @@ namespace Tulip {
 			UpdateEnvironmentPath();
 		}
 
+
 		#endregion
 
 
+		/////////////////////////////////////////
+		/// <summary>
+		/// Googleで検索
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void Search_ToolStripMenuItem_Click( object sender, EventArgs e ) {
+			//Application.op
+			var item = listView_Files.GetSelectItem();
+			//var ss = item.Text.Split( " " );
+			string urlEnc = Uri.EscapeDataString( item.Text );
+			//foreach(var s in ss)
+			Debug.Log( urlEnc );
+			var pi = new System.Diagnostics.ProcessStartInfo() {
+				FileName = $"https://www.google.com/search?q={urlEnc }",
+				UseShellExecute = true,
+			};
+
+			System.Diagnostics.Process.Start( pi );
+		}
 	}
 }

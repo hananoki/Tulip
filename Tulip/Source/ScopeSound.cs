@@ -6,7 +6,7 @@ namespace Tulip {
 	public class ScopeSound : IDisposable {
 		private bool disposedValue;
 
-		public ScopeSound(  ) {
+		public ScopeSound() {
 			Utils.PlaySoundJobStart();
 		}
 

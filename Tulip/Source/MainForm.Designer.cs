@@ -27,12 +27,15 @@ namespace Tulip {
 		///  the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
 			this.listView_Files = new Tulip.ListView_Files();
 			this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.検索ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.pictureBox_CoverArt = new System.Windows.Forms.PictureBox();
 			this.panel3 = new System.Windows.Forms.Panel();
 			this.listView_cueSheetRow = new Tulip.ListView_CueSheetRow();
@@ -56,23 +59,23 @@ namespace Tulip {
 			this.panel7 = new System.Windows.Forms.Panel();
 			this.textBox_foobar2000 = new HananokiLib.TextBoxGuide();
 			this.label_foobar2000 = new System.Windows.Forms.Label();
-			this.panel6 = new System.Windows.Forms.Panel();
-			this.textBox_flac = new HananokiLib.TextBoxGuide();
-			this.label_flac = new System.Windows.Forms.Label();
 			this.panel5 = new System.Windows.Forms.Panel();
 			this.textBox_7z = new HananokiLib.TextBoxGuide();
 			this.label_7z = new System.Windows.Forms.Label();
-			this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+			this.panel6 = new System.Windows.Forms.Panel();
+			this.textBox_flac = new HananokiLib.TextBoxGuide();
+			this.label_flac = new System.Windows.Forms.Label();
 			this.panel8 = new System.Windows.Forms.Panel();
 			this.textBox_shntool = new HananokiLib.TextBoxGuide();
 			this.label_shntool = new System.Windows.Forms.Label();
-			this.panel9 = new System.Windows.Forms.Panel();
-			this.textBox_neroAacEnc = new HananokiLib.TextBoxGuide();
-			this.label_neroAacEnc = new System.Windows.Forms.Label();
 			this.panel10 = new System.Windows.Forms.Panel();
 			this.textBox_mp3gain = new HananokiLib.TextBoxGuide();
 			this.label_mp3gain = new System.Windows.Forms.Label();
+			this.panel9 = new System.Windows.Forms.Panel();
+			this.textBox_neroAacEnc = new HananokiLib.TextBoxGuide();
+			this.label_neroAacEnc = new System.Windows.Forms.Label();
+			this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -82,6 +85,7 @@ namespace Tulip {
 			this.splitContainer2.Panel1.SuspendLayout();
 			this.splitContainer2.Panel2.SuspendLayout();
 			this.splitContainer2.SuspendLayout();
+			this.contextMenuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox_CoverArt)).BeginInit();
 			this.panel3.SuspendLayout();
 			this.panel2.SuspendLayout();
@@ -91,12 +95,12 @@ namespace Tulip {
 			this.panelSettings.SuspendLayout();
 			this.panel4.SuspendLayout();
 			this.panel7.SuspendLayout();
-			this.panel6.SuspendLayout();
 			this.panel5.SuspendLayout();
-			this.toolStrip2.SuspendLayout();
+			this.panel6.SuspendLayout();
 			this.panel8.SuspendLayout();
-			this.panel9.SuspendLayout();
 			this.panel10.SuspendLayout();
+			this.panel9.SuspendLayout();
+			this.toolStrip2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// panel1
@@ -151,6 +155,7 @@ namespace Tulip {
 			this.listView_Files.AllowDrop = true;
 			this.listView_Files.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader4});
+			this.listView_Files.ContextMenuStrip = this.contextMenuStrip1;
 			this.listView_Files.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listView_Files.FullRowSelect = true;
 			this.listView_Files.GridLines = true;
@@ -172,6 +177,20 @@ namespace Tulip {
 			// columnHeader4
 			// 
 			this.columnHeader4.Text = "Cue";
+			// 
+			// contextMenuStrip1
+			// 
+			this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.検索ToolStripMenuItem});
+			this.contextMenuStrip1.Name = "contextMenuStrip1";
+			this.contextMenuStrip1.Size = new System.Drawing.Size(147, 26);
+			// 
+			// 検索ToolStripMenuItem
+			// 
+			this.検索ToolStripMenuItem.Name = "検索ToolStripMenuItem";
+			this.検索ToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+			this.検索ToolStripMenuItem.Text = "Googleで検索";
+			this.検索ToolStripMenuItem.Click += new System.EventHandler(this.Search_ToolStripMenuItem_Click);
 			// 
 			// pictureBox_CoverArt
 			// 
@@ -393,36 +412,6 @@ namespace Tulip {
 			this.label_foobar2000.TabIndex = 0;
 			this.label_foobar2000.Text = "foobar2000 (foobar2000.exe)";
 			// 
-			// panel6
-			// 
-			this.panel6.Controls.Add(this.textBox_flac);
-			this.panel6.Controls.Add(this.label_flac);
-			this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel6.Location = new System.Drawing.Point(0, 153);
-			this.panel6.Name = "panel6";
-			this.panel6.Padding = new System.Windows.Forms.Padding(4);
-			this.panel6.Size = new System.Drawing.Size(584, 51);
-			this.panel6.TabIndex = 1;
-			// 
-			// textBox_flac
-			// 
-			this.textBox_flac.Dock = System.Windows.Forms.DockStyle.Top;
-			this.textBox_flac.Location = new System.Drawing.Point(4, 21);
-			this.textBox_flac.Name = "textBox_flac";
-			this.textBox_flac.Size = new System.Drawing.Size(576, 23);
-			this.textBox_flac.TabIndex = 1;
-			// 
-			// label_flac
-			// 
-			this.label_flac.AutoSize = true;
-			this.label_flac.Dock = System.Windows.Forms.DockStyle.Top;
-			this.label_flac.Location = new System.Drawing.Point(4, 4);
-			this.label_flac.Name = "label_flac";
-			this.label_flac.Padding = new System.Windows.Forms.Padding(0, 0, 0, 2);
-			this.label_flac.Size = new System.Drawing.Size(77, 17);
-			this.label_flac.TabIndex = 0;
-			this.label_flac.Text = "flac (flac.exe)";
-			// 
 			// panel5
 			// 
 			this.panel5.Controls.Add(this.textBox_7z);
@@ -453,24 +442,35 @@ namespace Tulip {
 			this.label_7z.TabIndex = 0;
 			this.label_7z.Text = "7-Zip (7z.exe)";
 			// 
-			// toolStrip2
+			// panel6
 			// 
-			this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton2});
-			this.toolStrip2.Location = new System.Drawing.Point(0, 0);
-			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(584, 25);
-			this.toolStrip2.TabIndex = 0;
-			this.toolStrip2.Text = "toolStrip2";
+			this.panel6.Controls.Add(this.textBox_flac);
+			this.panel6.Controls.Add(this.label_flac);
+			this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
+			this.panel6.Location = new System.Drawing.Point(0, 153);
+			this.panel6.Name = "panel6";
+			this.panel6.Padding = new System.Windows.Forms.Padding(4);
+			this.panel6.Size = new System.Drawing.Size(584, 51);
+			this.panel6.TabIndex = 1;
 			// 
-			// toolStripButton2
+			// textBox_flac
 			// 
-			this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton2.Name = "toolStripButton2";
-			this.toolStripButton2.Size = new System.Drawing.Size(48, 22);
-			this.toolStripButton2.Text = "戻る";
-			this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+			this.textBox_flac.Dock = System.Windows.Forms.DockStyle.Top;
+			this.textBox_flac.Location = new System.Drawing.Point(4, 21);
+			this.textBox_flac.Name = "textBox_flac";
+			this.textBox_flac.Size = new System.Drawing.Size(576, 23);
+			this.textBox_flac.TabIndex = 1;
+			// 
+			// label_flac
+			// 
+			this.label_flac.AutoSize = true;
+			this.label_flac.Dock = System.Windows.Forms.DockStyle.Top;
+			this.label_flac.Location = new System.Drawing.Point(4, 4);
+			this.label_flac.Name = "label_flac";
+			this.label_flac.Padding = new System.Windows.Forms.Padding(0, 0, 0, 2);
+			this.label_flac.Size = new System.Drawing.Size(77, 17);
+			this.label_flac.TabIndex = 0;
+			this.label_flac.Text = "flac (flac.exe)";
 			// 
 			// panel8
 			// 
@@ -502,36 +502,6 @@ namespace Tulip {
 			this.label_shntool.TabIndex = 0;
 			this.label_shntool.Text = "shntool (shntool.exe)";
 			// 
-			// panel9
-			// 
-			this.panel9.Controls.Add(this.textBox_neroAacEnc);
-			this.panel9.Controls.Add(this.label_neroAacEnc);
-			this.panel9.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel9.Location = new System.Drawing.Point(0, 0);
-			this.panel9.Name = "panel9";
-			this.panel9.Padding = new System.Windows.Forms.Padding(4);
-			this.panel9.Size = new System.Drawing.Size(584, 51);
-			this.panel9.TabIndex = 4;
-			// 
-			// textBox_neroAacEnc
-			// 
-			this.textBox_neroAacEnc.Dock = System.Windows.Forms.DockStyle.Top;
-			this.textBox_neroAacEnc.Location = new System.Drawing.Point(4, 21);
-			this.textBox_neroAacEnc.Name = "textBox_neroAacEnc";
-			this.textBox_neroAacEnc.Size = new System.Drawing.Size(576, 23);
-			this.textBox_neroAacEnc.TabIndex = 1;
-			// 
-			// label_neroAacEnc
-			// 
-			this.label_neroAacEnc.AutoSize = true;
-			this.label_neroAacEnc.Dock = System.Windows.Forms.DockStyle.Top;
-			this.label_neroAacEnc.Location = new System.Drawing.Point(4, 4);
-			this.label_neroAacEnc.Name = "label_neroAacEnc";
-			this.label_neroAacEnc.Padding = new System.Windows.Forms.Padding(0, 0, 0, 2);
-			this.label_neroAacEnc.Size = new System.Drawing.Size(194, 17);
-			this.label_neroAacEnc.TabIndex = 0;
-			this.label_neroAacEnc.Text = "NeroDigitalAudio (neroAacEnc.exe)";
-			// 
 			// panel10
 			// 
 			this.panel10.Controls.Add(this.textBox_mp3gain);
@@ -562,13 +532,62 @@ namespace Tulip {
 			this.label_mp3gain.TabIndex = 0;
 			this.label_mp3gain.Text = "MP3Gain (mp3gain.exe)";
 			// 
+			// panel9
+			// 
+			this.panel9.Controls.Add(this.textBox_neroAacEnc);
+			this.panel9.Controls.Add(this.label_neroAacEnc);
+			this.panel9.Dock = System.Windows.Forms.DockStyle.Top;
+			this.panel9.Location = new System.Drawing.Point(0, 0);
+			this.panel9.Name = "panel9";
+			this.panel9.Padding = new System.Windows.Forms.Padding(4);
+			this.panel9.Size = new System.Drawing.Size(584, 51);
+			this.panel9.TabIndex = 4;
+			// 
+			// textBox_neroAacEnc
+			// 
+			this.textBox_neroAacEnc.Dock = System.Windows.Forms.DockStyle.Top;
+			this.textBox_neroAacEnc.Location = new System.Drawing.Point(4, 21);
+			this.textBox_neroAacEnc.Name = "textBox_neroAacEnc";
+			this.textBox_neroAacEnc.Size = new System.Drawing.Size(576, 23);
+			this.textBox_neroAacEnc.TabIndex = 1;
+			// 
+			// label_neroAacEnc
+			// 
+			this.label_neroAacEnc.AutoSize = true;
+			this.label_neroAacEnc.Dock = System.Windows.Forms.DockStyle.Top;
+			this.label_neroAacEnc.Location = new System.Drawing.Point(4, 4);
+			this.label_neroAacEnc.Name = "label_neroAacEnc";
+			this.label_neroAacEnc.Padding = new System.Windows.Forms.Padding(0, 0, 0, 2);
+			this.label_neroAacEnc.Size = new System.Drawing.Size(194, 17);
+			this.label_neroAacEnc.TabIndex = 0;
+			this.label_neroAacEnc.Text = "NeroDigitalAudio (neroAacEnc.exe)";
+			// 
+			// toolStrip2
+			// 
+			this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton2});
+			this.toolStrip2.Location = new System.Drawing.Point(0, 0);
+			this.toolStrip2.Name = "toolStrip2";
+			this.toolStrip2.Size = new System.Drawing.Size(584, 25);
+			this.toolStrip2.TabIndex = 0;
+			this.toolStrip2.Text = "toolStrip2";
+			// 
+			// toolStripButton2
+			// 
+			this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton2.Name = "toolStripButton2";
+			this.toolStripButton2.Size = new System.Drawing.Size(48, 22);
+			this.toolStripButton2.Text = "戻る";
+			this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(584, 369);
-			this.Controls.Add(this.panelSettings);
 			this.Controls.Add(this.panelRoot);
+			this.Controls.Add(this.panelSettings);
 			this.Controls.Add(this.statusStrip1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.KeyPreview = true;
@@ -586,6 +605,7 @@ namespace Tulip {
 			this.splitContainer2.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
 			this.splitContainer2.ResumeLayout(false);
+			this.contextMenuStrip1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox_CoverArt)).EndInit();
 			this.panel3.ResumeLayout(false);
 			this.panel2.ResumeLayout(false);
@@ -600,18 +620,18 @@ namespace Tulip {
 			this.panel4.ResumeLayout(false);
 			this.panel7.ResumeLayout(false);
 			this.panel7.PerformLayout();
-			this.panel6.ResumeLayout(false);
-			this.panel6.PerformLayout();
 			this.panel5.ResumeLayout(false);
 			this.panel5.PerformLayout();
-			this.toolStrip2.ResumeLayout(false);
-			this.toolStrip2.PerformLayout();
+			this.panel6.ResumeLayout(false);
+			this.panel6.PerformLayout();
 			this.panel8.ResumeLayout(false);
 			this.panel8.PerformLayout();
-			this.panel9.ResumeLayout(false);
-			this.panel9.PerformLayout();
 			this.panel10.ResumeLayout(false);
 			this.panel10.PerformLayout();
+			this.panel9.ResumeLayout(false);
+			this.panel9.PerformLayout();
+			this.toolStrip2.ResumeLayout(false);
+			this.toolStrip2.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -664,5 +684,7 @@ namespace Tulip {
 		private Panel panel10;
 		private TextBoxGuide textBox_mp3gain;
 		private Label label_mp3gain;
+		private ContextMenuStrip contextMenuStrip1;
+		private ToolStripMenuItem 検索ToolStripMenuItem;
 	}
 }

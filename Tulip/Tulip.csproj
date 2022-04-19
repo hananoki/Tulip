@@ -3,21 +3,27 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>annotations</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>disable</ImplicitUsings>
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionPrefix>0.2.0</VersionPrefix>
     <ApplicationIcon>AppIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>False</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="..\HananokiLib\ArrayUtility.cs" Link="HananokiLib\ArrayUtility.cs" />
     <Compile Include="..\HananokiLib\Debug.cs" Link="HananokiLib\Debug.cs" />
     <Compile Include="..\HananokiLib\DirectoryUtils.cs" Link="HananokiLib\DirectoryUtils.cs" />
-    <Compile Include="..\HananokiLib\fs.cs" Link="HananokiLib\fs.cs" />
+    <Compile Include="..\HananokiLib\Extensions\CheckedListBoxExtension.cs" Link="HananokiLib\Extensions\CheckedListBoxExtension.cs" />
+    <Compile Include="..\HananokiLib\Extensions\ListViewExtension.cs" Link="HananokiLib\Extensions\ListViewExtension.cs" />
+    <Compile Include="..\HananokiLib\Extensions\StringExtensions.cs" Link="HananokiLib\Extensions\StringExtensions.cs" />
+    <Compile Include="..\HananokiLib\Extensions\WindowsFormsExtension.cs" Link="HananokiLib\Extensions\WindowsFormsExtension.cs" />
     <Compile Include="..\HananokiLib\Helper.cs" Link="HananokiLib\Helper.cs" />
     <Compile Include="..\HananokiLib\HListView.cs" Link="HananokiLib\HListView.cs" />
-    <Compile Include="..\HananokiLib\icon.cs" Link="HananokiLib\icon.cs" />
     <Compile Include="..\HananokiLib\JsonUtils.cs" Link="HananokiLib\JsonUtils.cs" />
     <Compile Include="..\HananokiLib\LitJson\IJsonWrapper.cs" Link="HananokiLib\LitJson\IJsonWrapper.cs" />
     <Compile Include="..\HananokiLib\LitJson\JsonData.cs" Link="HananokiLib\LitJson\JsonData.cs" />
@@ -31,11 +37,13 @@
     <Compile Include="..\HananokiLib\Log.cs" Link="HananokiLib\Log.cs" />
     <Compile Include="..\HananokiLib\LogWindow.cs" Link="HananokiLib\LogWindow.cs" />
     <Compile Include="..\HananokiLib\LogWindow.Designer.cs" Link="HananokiLib\LogWindow.Designer.cs" />
-    <Compile Include="..\HananokiLib\shell.cs" Link="HananokiLib\shell.cs" />
-    <Compile Include="..\HananokiLib\sound.cs" Link="HananokiLib\sound.cs" />
-    <Compile Include="..\HananokiLib\StringExtensions.cs" Link="HananokiLib\StringExtensions.cs" />
+    <Compile Include="..\HananokiLib\StatusBarMessage.cs" Link="HananokiLib\StatusBarMessage.cs" />
+    <Compile Include="..\HananokiLib\Sugar\fs.cs" Link="HananokiLib\Sugar\fs.cs" />
+    <Compile Include="..\HananokiLib\Sugar\icon.cs" Link="HananokiLib\Sugar\icon.cs" />
+    <Compile Include="..\HananokiLib\Sugar\shell.cs" Link="HananokiLib\Sugar\shell.cs" />
+    <Compile Include="..\HananokiLib\Sugar\sound.cs" Link="HananokiLib\Sugar\sound.cs" />
+    <Compile Include="..\HananokiLib\TextBoxGuide.cs" Link="HananokiLib\TextBoxGuide.cs" />
     <Compile Include="..\HananokiLib\Win32.cs" Link="HananokiLib\Win32.cs" />
-    <Compile Include="..\HananokiLib\WindowsFormsExtension.cs" Link="HananokiLib\WindowsFormsExtension.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,7 +51,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="..\HananokiLib\LogWindow.resx" Link="HananokiLib\LogWindow.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="HananokiLib\LitJson\" />
+    <Folder Include="HananokiLib\Extensions\" />
+    <Folder Include="HananokiLib\Sugar\" />
   </ItemGroup>
 
   <ItemGroup>

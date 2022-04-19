@@ -1,7 +1,6 @@
 #pragma warning disable 8625
 
 using HananokiLib;
-using ImageMagick;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -35,7 +34,7 @@ namespace Tulip {
 
 
 		/////////////////////////////////////////
-		void EnablePanel(Panel panel) {
+		void EnablePanel( Panel panel ) {
 			panelRoot.Visible = false;
 			panelSettings.Visible = false;
 

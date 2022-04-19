@@ -7,6 +7,9 @@
     <Compile Update="..\HananokiLib\LogWindow.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="..\HananokiLib\TextBoxGuide.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="Source\CustomListView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -14,6 +17,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Source\MainFormFunc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Source\ProgressForm.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

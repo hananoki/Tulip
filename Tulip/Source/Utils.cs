@@ -7,14 +7,14 @@
 using HananokiLib;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace Tulip {
 
@@ -26,16 +26,37 @@ namespace Tulip {
 		/////////////////////////////////////////
 		async public static Task<int> ExecCDArcive( ListViewItem_Files[] cues ) {
 
+			var progress = new ProgressForm();
+			progress.SetCenterLocation( MainForm.instance );
+			progress.Show();
+			progress.Setup( "CDアーカイブ", cues.Length + 1 );
+
 			var result = await Task.Run<int>( () => {
 				int r = 0;
 				int num = 0;
 				Parallel.For( 0, cues.Length, Helper.s_parallelOptions, i => {
 					num++;
-					r = ExecCDArcive( cues[ i ] );
+					int r2 = InternalExecCDArcive( cues[ i ] );
+					if( r2 != 0 ) {
+						r = r2;
+					}
 				} );
 				return r;
 			} );
-			if( result < 0 ) return result;
+
+			Thread.Sleep( 1000 );
+
+			if( result != 0 ) {
+				if( 0 < result ) {
+					UINotifyStatus.Info( "処理をキャンセルしました" );
+				}
+				else {
+					UINotifyStatus.Error( "致命的なエラーが発生しました" );
+				}
+
+				ProgressForm.CloseProgress();
+				return result;
+			}
 
 			var dir = cues[ 0 ].cueSheet.filePath.GetDirectoryName();
 			Environment.CurrentDirectory = dir;
@@ -68,27 +89,34 @@ namespace Tulip {
 						MessageBoxButtons.YesNo,
 						MessageBoxIcon.Question );
 			if( dr == DialogResult.No ) {
+				ProgressForm.CloseProgress();
 				return -2;
 			}
 
 			var zipfile = baseName + ".zip";
-			UINotifyStatus.Info( "zip圧縮中... " + zipfile );
+			//UINotifyStatus.Info( "zip圧縮中... " + zipfile );
+			ProgressForm.SetMessage( $"zip圧縮中... {zipfile}" );
 
 			var s = new StringBuilder();
 			s.Append( $"a -y -mx=0 {zipfile.Quote()} {string.Join( " ", files.Select( a => a.Quote() ).ToArray() )}" );
 
 			await Task.Run( () => {
 				shell.startProcess( "7z", s.ToString() );
+				ProgressForm.PerformStep();
 			} );
 
-			UINotifyStatus.Info( @"「複数DiscPack」が完了しました" );
+			//UINotifyStatus.Info( @"「複数DiscPack」が完了しました" );
+
+			ProgressForm.SetMessage( $"CDアーカイブ: 完了しました" );
+			Thread.Sleep( 1000 );
+			ProgressForm.CloseProgress();
 
 			return 0;
 		}
 
 
 		/////////////////////////////////////////
-		public static int ExecCDArcive( ListViewItem_Files c ) {
+		static int InternalExecCDArcive( ListViewItem_Files c ) {
 
 			var wavFilePath = c.cueSheet.filePath.ChangeExtension( ".wav" );
 			var dir = wavFilePath.GetDirectoryName();
@@ -111,23 +139,35 @@ namespace Tulip {
 			var logFile = fname + ".log";
 			var jpgFile = c.coverArtFilePath;//fname + ".jpg";
 			var jpgOpt = $"--picture={jpgFile.Quote()}";
+
 			if( !jpgFile.IsExistsFile() ) {
-				DialogResult result = MessageBox.Show(
+				DialogResult dialogResult = MessageBox.Show(
 					String.Format( "coverArtFilePath が見つかりませんでした。\n画像の埋め込み「なし」で継続しますがよろしいですか？" ),
 					"Info",
 					MessageBoxButtons.YesNo,
 					MessageBoxIcon.Question );
-				if( result == DialogResult.No ) {
-					return -1;
+				if( dialogResult == DialogResult.No ) {
+					return 1;
 				}
 				jpgOpt = "";
 				jpgFile = "";
 			}
 
+			ProgressForm.SetMessage( $"flacでエンコード中... [{wavFilePath.GetFileName()}]" );
+
 			var cueOpt = $"--tag-from-file=\"CUESHEET={fname}.cue\"";
 			var opt = $"-8 --replay-gain {jpgOpt} {cueOpt} \"{fname}.wav\" -o {newfilepath.Quote()}";
-			UINotifyStatus.Info( $"flacでエンコード中... [{wavFilePath.GetFileName()}]", interval: 0 );
-			shell.startProcess( "flac", opt );
+
+			try {
+				shell.startProcess( "flac", opt );
+			}
+			catch( Exception e ) {
+				Debug.Exception( e );
+				Debug.Error( $"flac {opt}" );
+				return -1;
+			}
+
+			ProgressForm.PerformStep();
 
 #if false
 				var s = new StringBuilder();
@@ -160,7 +200,14 @@ namespace Tulip {
 
 
 		/////////////////////////////////////////
-		async public static Task<int> ExecConv( string filepath ) {
+		async public static Task<int> ExecConv( CueSheet cueSheet ) {
+			var progress = new ProgressForm();
+			progress.SetCenterLocation( MainForm.instance );
+
+			progress.Show();
+			progress.Setup( cueSheet.filePath.GetFileName().ChangeExtension( ".wav" ), cueSheet.Count + 1 );
+			var filepath = cueSheet.filePath;
+
 			return await Task.Run<int>( () => {
 				var wavFilePath = filepath.ChangeExtension( ".wav" );
 				var dir = wavFilePath.GetDirectoryName();
@@ -171,8 +218,12 @@ namespace Tulip {
 				var wavdir = outputDir + "\\" + filepath.GetBaseName() + "_WAV";
 
 
+				ProgressForm.SetMessage( $"結合wavをcueで分割する" );
+
 				// 結合wavをcueで分割する
 				SplitWav( wavdir, wavFilePath );
+
+				ProgressForm.PerformStep();
 
 				// 分割WavをCueSheetを元にリネーム
 				ApplyWavDirCueSheet( wavdir, wavFilePath );
@@ -185,29 +236,44 @@ namespace Tulip {
 					File.Copy( filepath.ChangeExtension( "jpg" ), wavdir + "\\cover.jpg", true );
 				}
 
+				ProgressForm.SetMessage( $"エンコードを開始します..." );
+				Thread.Sleep( 100 );
+
 				string[] m4a = Directory.GetFiles( fdirM4A, "*.m4a", SearchOption.TopDirectoryOnly );
 				if( m4a.Length == 0 ) {
 					string[] files2 = Directory.GetFiles( wavdir, "*.wav", SearchOption.TopDirectoryOnly );
-					int num = 0;
+					int now = 0;
 					Parallel.For( 0, files2.Length, Helper.s_parallelOptions, i => {
-						num++;
-						UINotifyStatus.Info( $"エンコード処理中... ({num}/{files2.Length})", interval: 0 );
+						//num++;
+						//UINotifyStatus.Info( $"エンコード処理中... ({num}/{files2.Length})", interval: 0 );
+						//ProgressForm.SetMessage( $"エンコード処理中... ({num}/{files2.Length})" );
+
 						string output = fdirM4A + "\\" + files2[ i ].GetFileName().ChangeExtension( "m4a" );
 						shell.startProcess(
 							"neroAacEnc",
 							$"-lc -q 1.00 -if {files2[ i ].Quote()} -of {output.Quote()}" );
 						shell.startProcess( "mp3gain", $"/r /c /p {output.Quote()}" );
+
+						Interlocked.Increment( ref now );
+						ProgressForm.PerformStep();
+						ProgressForm.SetMessage( $"エンコード処理中... ({now}/{files2.Length})" );
 					} );
 				}
+				else {
+					for( int i = 0; i < m4a.Length; i++ ) ProgressForm.PerformStep();
+				}
 
-
-				UINotifyStatus.Info( $"トラック毎に変換: 完了しました" );
+				//UINotifyStatus.Info( $"トラック毎に変換: 完了しました" );
+				ProgressForm.SetMessage( $"トラック毎に変換: 完了しました" );
+				Thread.Sleep( 1000 );
 
 				shell.start( "foobar2000" );
 				shell.startProcess( "foobar2000", $"\"/command:New playlist\"" );
 				//var cue = (CueSheet) treeView1.SelectedNode.Tag;
 				//var m4aFolder = $@"{cue.filePath.getDirectoryName()}\{cue.filePath.getBaseName()}";
 				shell.startProcess( "foobar2000", $"/add {fdirM4A.Quote()}" );
+
+				ProgressForm.CloseProgress();
 
 				return 0;
 			} );
